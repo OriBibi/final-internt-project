@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
               <Wc />
             </ListItemIcon>
              
-            <ListItemText primary="Find a restroom" />
+            <ListItemText primary="Find your distribution area" />
           
           </ListItem>
           </NavLink>
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
             <ListItemIcon>
               <Person />
             </ListItemIcon>
-            <ListItemText primary="Profile info" />
+            <ListItemText primary="Profile user info" />
             </ListItem>
           </NavLink>
           
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
               <Add />
             </ListItemIcon>
 
-            <ListItemText primary="Add restroom" />
+            <ListItemText primary="Add distribution point" />
           </ListItem></NavLink>
           
 
@@ -112,7 +112,7 @@ const Profile = () =>
             </AppBar>
             <main>
                 <Container maxWidth="xs">
-                <Typography variant="h3" align="left">&nbsp; Hello,</Typography>
+                <Typography variant="h3" align="left">&nbsp; Welcome,</Typography>
                 </Container>
                 <Container maxWidth="xs" minHeigth="20vh">
                 <Typography variant="h4" align="left">&nbsp;&nbsp;    {JSON.parse(localStorage.getItem('user')).name}</Typography>

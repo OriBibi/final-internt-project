@@ -24,5 +24,5 @@ app.get('*', (req,res) =>{
 });
 
 app.listen(port, () => {
-    console.log(`Flush server listening at http://localhost:${port}`);
+    console.log(`server listening at http://localhost:${port}`);
 });
