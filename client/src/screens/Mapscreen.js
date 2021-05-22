@@ -229,7 +229,7 @@ function Search({ panTo }) {
           <ComboboxList>
             {status === "OK" &&
               data.map(({ id, description }) => (
-                <ComboboxOption key={description} value={description} />
+                <ComboboxOption key={id} value={description} />
               ))}
           </ComboboxList>
         </ComboboxPopover>
@@ -258,7 +258,7 @@ const Markers = ({currentLat, currentLng}) => {
   
   useLayoutEffect(()=>{   
     console.log("useEffect triggered")
-    fetch('/api/toilet/nearbyToilets?lat='+currentLat+'&lng='+currentLng+"&maxDistance=25000",{
+    fetch('/api/toilet/ב?lat='+currentLat+'&lng='+currentLng+"&maxDistance=25000",{
       method:"GET",
             headers:{
                 "Content-Type":"application/json", 
@@ -299,11 +299,11 @@ const Markers = ({currentLat, currentLng}) => {
             if(filter.needsToiletPaper==="true"&&toilet.hasToiletPaper!==null&&toilet.hasToiletPaper===false){
               toiletFits=false;
             }
-            if(filter.gender!==""&&toilet.gender!==null&&((filter.gender==="male"&&toilet.gender==="a")||
-                    (filter.gender==="female"&&toilet.gender==="b")
-                    ||(filter.gender==="other"&&!toilet.gender==="c"))){
-                      toiletFits=false;
-                    }
+            // if(filter.gender!==""&&toilet.gender!==null&&((filter.gender==="male"&&toilet.gender==="a")||
+            //         (filter.gender==="female"&&toilet.gender==="b")
+            //         ||(filter.gender==="other"&&!toilet.gender==="c"))){
+            //           toiletFits=false;
+            //         }
             if(toiletFits){
               //console.log({toilet, filter})
               filteredToilets.push(toilet);
@@ -386,9 +386,9 @@ const Markers = ({currentLat, currentLng}) => {
                    : null}
                   
                   {selected.toiletType === "w" ? <span> <Chip  variant="outlined" icon={<AirlineSeatLegroomExtra className={chipStyle.icons}/>}   size="small" label="Commode" className = {chipStyle.root}/>&nbsp; </span>: null}
-                  {selected.gender === "a" ? <span> <Chip   variant="outlined" icon={<PregnantWoman className={chipStyle.icons}/>}   size="small" label="Ladies" className = {chipStyle.root}/>&nbsp; </span>: null}
+                  {/* {selected.gender === "a" ? <span> <Chip   variant="outlined" icon={<PregnantWoman className={chipStyle.icons}/>}   size="small" label="Ladies" className = {chipStyle.root}/>&nbsp; </span>: null}
                   {selected.gender === "b" ? <span> <Chip   variant="outlined" icon={<Person className={chipStyle.icons}/>}   size="small" label="Gents" className = {chipStyle.root}/>&nbsp; </span>: null}
-                  {selected.gender === "c" ? <span> <Chip   variant="outlined" icon={<Wc className={chipStyle.icons}/>} label="Unisex" size="small" className = {chipStyle.root}/>&nbsp; </span>: null}
+                  {selected.gender === "c" ? <span> <Chip   variant="outlined" icon={<Wc className={chipStyle.icons}/>} label="Unisex" size="small" className = {chipStyle.root}/>&nbsp; </span>: null} */}
 
                   
                  

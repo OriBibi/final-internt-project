@@ -54,9 +54,9 @@ const toiletSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    gender:{
+    contactNumber:{
         type: String,
-        default: "c"
+        // default: "c"
     },
     /*
     "a" - only females

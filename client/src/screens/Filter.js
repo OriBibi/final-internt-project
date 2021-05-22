@@ -43,7 +43,7 @@ const Filter = () => {
 
   const history = useHistory()
   const [needsToiletPaper,setPaper] = useState("")
-  const [gender,setGender] = useState("")
+  const [contactNumber,setGender] = useState("")
   const [differentlyAbled,setAbled] = useState("")
   const [maximumPrice,setMax] = useState("")
   const [indianPreferred,setStyle] = useState("")
@@ -52,7 +52,7 @@ const Filter = () => {
 
   const filterResults = () => {
     
-    localStorage.setItem("filterSettings", JSON.stringify({isAvailable, indianPreferred, needsToiletPaper, gender, differentlyAbled, maximumPrice}))
+    localStorage.setItem("filterSettings", JSON.stringify({isAvailable, indianPreferred, needsToiletPaper, contactNumber, differentlyAbled, maximumPrice}))
     history.push("/");
   }
   useEffect( ()=>{
@@ -61,7 +61,7 @@ const Filter = () => {
             filter={
                 indianPreferred:"false",
                 needsToiletPaper:"false",
-                gender:"male",
+                // gender:"male",
                 differentlyAbled:"false",
                 maximumPrice:"500",
                 isAvailable:"true",
@@ -114,13 +114,13 @@ const Filter = () => {
                             <MenuItem value="false">No</MenuItem>
                         </TextField>
                     </Grid>
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                         <TextField fullWidth id="gender" label="Your Gender?" variant="filled" select onChange={(e)=>setGender(e.target.value)}>
                             <MenuItem value="male">Male</MenuItem>
                             <MenuItem value="female">Female</MenuItem>
                             <MenuItem value="other">Other</MenuItem>
                         </TextField>
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12}>
                         <TextField fullWidth id="differentlyAbled" label="Are you differently-abled?" variant="filled" select onChange={(e)=>setAbled(e.target.value)}>
                             <MenuItem value="true">Yes</MenuItem>

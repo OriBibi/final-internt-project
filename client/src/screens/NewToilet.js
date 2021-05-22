@@ -145,7 +145,7 @@ const NewToilet = () => {
   const [restroomPrice, setRestroomPrice] = React.useState();
   const [bathroomPrice, setBathroomPrice] = React.useState();
   const [hasToiletPaper, setHasToiletPaper] = React.useState(false);
-  const [gender, setGender] = React.useState("a");
+  const [contactNumber, setGender] = React.useState("");
   const [differentlyAbled, setDifferentlyAbled] = React.useState(false);
   const [desc, setDesc] = React.useState("")
   const [isPublic, setPublic] = React.useState(false);
@@ -168,7 +168,7 @@ const NewToilet = () => {
       landmarkName: name,
       isPublic: isPublic,
       differentlyAbled: differentlyAbled,
-      gender: gender,
+      contactNumber: contactNumber,
       hasToiletPaper: hasToiletPaper,
       restroomPrice: restroomPrice,
       bathroomPrice: bathroomPrice,
@@ -189,7 +189,7 @@ const NewToilet = () => {
         landmarkName: name,
         isPublic: isPublic,
         differentlyAbled: differentlyAbled,
-        gender: gender,
+        contactNumber: contactNumber,
         hasToiletPaper: hasToiletPaper,
         restroomPrice: restroomPrice,
         bathroomPrice: bathroomPrice,
@@ -330,8 +330,8 @@ const NewToilet = () => {
                 setIndian(event.target.value);
 
               }}>
-                <FormControlLabel value="i" control={<Radio />} label="Squat type" style={{ color: "black" }} />
-                <FormControlLabel value="w" control={<Radio />} label="Commode" style={{ color: "black" }} />
+                <FormControlLabel value="i" control={<Radio />} label="building" style={{ color: "black" }} />
+                <FormControlLabel value="w" control={<Radio />} label="private home" style={{ color: "black" }} />
 
               </RadioGroup>
             </FormControl>
@@ -340,16 +340,18 @@ const NewToilet = () => {
           </Grid>
           <Grid item xs={12}>
             <FormControl component="fieldset">
-              <FormLabel component="legend">Gender accessibility</FormLabel>
-              <RadioGroup aria-label="type" name="type" value={gender} onChange={(event) => {
+              <FormLabel component="legend">Enter contact number</FormLabel>
+              <TextField
+              fullWidth
+              variant="filled"
+
+              id="filled-basic"
+              label="numbers only"
+              value={name} value={contactNumber} onChange={(event) => {
                 setGender(event.target.value);
 
               }}>
-                <FormControlLabel value="a" control={<Radio />} label="Ladies" style={{ color: "black" }} />
-                <FormControlLabel value="b" control={<Radio />} label="Gents" style={{ color: "black" }} />
-                <FormControlLabel value="c" control={<Radio />} label="Unisex" style={{ color: "black" }} />
-
-              </RadioGroup>
+              </TextField>
             </FormControl>
 
 
@@ -693,7 +695,7 @@ function SearchMap({ panTo }) {
           value={value}
           onChange={handleInput}
           disabled={!ready}
-          placeholder="Search"
+          placeholder="Search for something"
         />
         <ComboboxPopover>
           <ComboboxList>
