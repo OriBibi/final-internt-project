@@ -14,9 +14,9 @@ var ObjectId = require('mongoose').Types.ObjectId
 
 
 router.post('/newToilet', requireLogin, (req, res) => {
-  const {lng, lat, restroomPrice, bathroomPrice, description, photos, hasToiletPaper, differentlyAbled, contactNumber, landmarkName, toiletType, isPublic } = req.body;
+  const {lng, lat, restroomPrice, bathroomPrice, description, photos, hasToiletPaper, differentlyAbled, contactNumber, landmarkName, volunteer, isPublic } = req.body;
 
-  if( !lng ||!lat || !restroomPrice || hasToiletPaper===null || !contactNumber || !landmarkName || !toiletType ){
+  if( !lng ||!lat || !restroomPrice || hasToiletPaper===null || !contactNumber || !landmarkName || !volunteer ){
     return res.status(422).json({error:"Null fields are not allowed"})
   }
   const toilet = new Toilet({
@@ -35,8 +35,7 @@ router.post('/newToilet', requireLogin, (req, res) => {
     contactNumber,
     differentlyAbled,
     landmarkName, 
-    toiletType
-
+    volunteer
   })
   toilet.save()
     .then(() => {

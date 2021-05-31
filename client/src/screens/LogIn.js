@@ -39,13 +39,12 @@ const LogIn = () => {
             })
         }).then(res=>res.json())
         .then(data=>{
-            console.log(data)
+           
            if(data.error){
               alert(data.error)
            }
            else{
                localStorage.setItem("jwt",data.token)
-               
                localStorage.setItem("user", JSON.stringify(data.user))
                console.log("jwt token", data.token)
                console.log("User data", data.user); 

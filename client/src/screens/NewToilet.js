@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import Geocoder from "react-map-gl-geocoder";
-
+import { MenuItem, Select } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 const MAPBOX_TOKEN = "pk.eyJ1IjoiMTV0aHJlYWQiLCJhIjoiY2ttZmUxMnhnMDk3ZjJ1czB4Z2xvYzZscCJ9.-88YuiCjn8ZYzeTcmfNnaQ";
 
 const NewToilet = () => {
-
+  
   //snackbar code
   const [snackbarStatus, setOpenSnackbar] = React.useState(false);
   const [successMessage, setSuccessMessage] = React.useState("")
@@ -145,26 +145,49 @@ const NewToilet = () => {
   const [restroomPrice, setRestroomPrice] = React.useState();
   const [bathroomPrice, setBathroomPrice] = React.useState();
   const [hasToiletPaper, setHasToiletPaper] = React.useState(false);
-  const [contactNumber, setGender] = React.useState("");
+  const [contactNumber, setContactNumber] = React.useState("");
   const [differentlyAbled, setDifferentlyAbled] = React.useState(false);
   const [desc, setDesc] = React.useState("")
   const [isPublic, setPublic] = React.useState(false);
-  const [indian, setIndian] = React.useState('i');
   const [image, setImage] = useState("")
   const [photoURL, setPhotoURL] = useState("")
   const [photos, setPhotos] = useState([])
   const [rem, setRem] = useState(5)
-
-
-
+  const [user, setUser] = useState("")
+  const [nameOfAllUsers, setNameOfAllUsers] = useState(
+    []);
 
   const classes = useStyles();
+  
+  const getUsersFromDB = () => {
+    fetch("/api/profile/getUsers", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
 
+      })
+    }).then(res => res.json())
+      .then(data => {
 
-
+        if (data.error) {
+          alert(data.error)
+        }
+        else {
+          setNameOfAllUsers(data.users)
+          //  setNameOfAllUsers(data.users.values())
+          //console.log("User data from DB by getUsersFromDB()", data.users);
+          //console.log("typeof",typeof data.users); 
+          //console.log("nameOfAllUsers",nameOfAllUsers); 
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+  }
 
   const addDistributionPoint = () => {
-    console.log({
+    console.log("addDistributionPoint",{
       landmarkName: name,
       isPublic: isPublic,
       differentlyAbled: differentlyAbled,
@@ -174,8 +197,8 @@ const NewToilet = () => {
       bathroomPrice: bathroomPrice,
       lat: marker.lat,
       lng: marker.lng,
-      Indian: indian,
-      photos: photos
+      volunteer:user,
+      photos: photos,
 
     })
 
@@ -193,11 +216,11 @@ const NewToilet = () => {
         hasToiletPaper: hasToiletPaper,
         restroomPrice: restroomPrice,
         bathroomPrice: bathroomPrice,
-        toiletType: indian,
+        volunteer:user,
         lat: marker.lat,
         lng: marker.lng,
         photos: photos
-
+        
 
 
       })
@@ -324,33 +347,31 @@ const NewToilet = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Distribution type</FormLabel>
-              <RadioGroup aria-label="type" name="type" value={indian} onChange={(event) => {
-                setIndian(event.target.value);
-
-              }}>
-                <FormControlLabel value="i" control={<Radio />} label="building" style={{ color: "black" }} />
-                <FormControlLabel value="w" control={<Radio />} label="private home" style={{ color: "black" }} />
-
-              </RadioGroup>
-            </FormControl>
-
-
+            <Select
+              label="Users:"
+              variant="filled"
+              fullWidth id="user"
+              onClick={getUsersFromDB()}
+              onChange={(event) => {
+                setUser(event.currentTarget.dataset.value);}}
+            >
+              {nameOfAllUsers.map(userName => (<MenuItem key={userName} value={userName} >{userName}</MenuItem>))}
+            </Select>
+            {/* <MenuItem value="true">{getUsersFromDB()}</MenuItem> */}
           </Grid>
           <Grid item xs={12}>
             <FormControl component="fieldset">
               <FormLabel component="legend">Enter contact number</FormLabel>
               <TextField
-              fullWidth
-              variant="filled"
+                fullWidth
+                variant="filled"
 
-              id="filled-basic"
-              label="numbers only"
-              value={name} value={contactNumber} onChange={(event) => {
-                setGender(event.target.value);
+                id="filled-basic"
+                label="numbers only"
+                value={name} value={contactNumber} onChange={(event) => {
+                  setContactNumber(event.target.value);
 
-              }}>
+                }}>
               </TextField>
             </FormControl>
 

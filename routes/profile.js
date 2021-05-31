@@ -10,6 +10,25 @@ var db = require('../utility/db.js');
 var User = require("../models/user");
 var Toilet = require("../models/toilet");
 
+
+
+//gets all users name from db
+router.post('/getUsers',(req,res)=>{
+    
+    User.find({}, function(err, users) {
+        var userMap = [];
+        var i=0
+        users.forEach(function(user) {
+          userMap[i] = user.name;
+          i=i+1
+        });
+    
+        res.json({users:userMap});  
+      }).catch((error) => {
+        console.log('1 Error here',error);
+    });
+});
+
 //adds a new user to db, requires {name, email, password}
 router.post('/signup', (req, res) => {
     const { name, email, phone, password } = req.body;
@@ -32,6 +51,7 @@ router.post('/signup', (req, res) => {
                     });
                     user.save()
                         .then(() => {
+                            
                             res.json({ message: "Saved successfully" })
                         })
                         .catch((error) => {
@@ -51,6 +71,8 @@ router.post('/login', (req, res) => {
     if(!email||!password){
         return res.status(422).json({error:"Email or password is missing"});
     }
+    
+
     User.findOne({email:email})
         .then(savedUser => {
             if(!savedUser){
@@ -74,7 +96,7 @@ router.post('/login', (req, res) => {
 
 })
 
-//gets user data
+//gets a specific user data
 router.get('/userData', requireLogin, (req, res) => {
     const {authorization} = req.headers;
     //req body/json => "bearer":"lfsjiejfoljoljffw"

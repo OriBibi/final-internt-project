@@ -60,7 +60,7 @@ const center = {
   lat: 51.501286,
   lng: 0.046541,
 };  
-console.log('3333',process.env.REACT_APP_GOOGLE_MAPS_API_KEYy)
+console.log('3333',process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
 const Map = () => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -183,13 +183,7 @@ function Locate({ panTo }) {
 }
 
 function Search({ panTo }) {
-  const {
-    ready,
-    value,
-    suggestions: { status, data },
-    setValue,
-    clearSuggestions,
-  } = usePlacesAutocomplete({
+  const {ready,value,suggestions: { status, data },setValue,clearSuggestions,} = usePlacesAutocomplete({
     requestOptions: {
       location: { lat: () => 43.6532, lng: () => -79.3832 },
       radius: 70 * 1000,
@@ -258,7 +252,7 @@ const Markers = ({currentLat, currentLng}) => {
   
   useLayoutEffect(()=>{   
     console.log("useEffect triggered")
-    fetch('/api/toilet/ב?lat='+currentLat+'&lng='+currentLng+"&maxDistance=25000",{
+    fetch('/api/toilet/nearbyToilets?lat='+currentLat+'&lng='+currentLng+"&maxDistance=25000",{
       method:"GET",
             headers:{
                 "Content-Type":"application/json", 
@@ -283,20 +277,23 @@ const Markers = ({currentLat, currentLng}) => {
            
             var toiletFits=true;
             if(filter.differentlyAbled&&filter.differentlyAbled!==""&&filter.differentlyAbled==="true"&&toilet.differentlyAbled!==null&&toilet.differentlyAbled===false){
-             //console.log({toilet, filter})
+              console.log("99999999999",{toilet, filter}) 
               toiletFits=false;
             }
             if(filter.indianPreferred!==""&&toilet.isIndian!==null&&((filter.indianPreferred==="true"&&toilet.isIndian===false)||(filter.indianPreferred==="false"&&toilet.isIndian===true))){
-             //console.log({toilet, filter})
+             console.log("333333",{toilet, filter})
               toiletFits=false;
             }
             if(filter.maximumPrice!==""&&toilet.restroomPrice!==null&&parseInt(filter.maximumPrice)<toilet.restroomPrice){
+              console.log("222222222",{toilet, filter})
               toiletFits=false;
             }
             if(filter.isAvailable&&filter.isAvailable!==""&&toilet.isAvailable!==null&&((filter.isAvailable==="true"&&toilet.isAvailable===false))){
+              console.log("`11111111111`",{toilet, filter})
               toiletFits=false;
             }
             if(filter.needsToiletPaper==="true"&&toilet.hasToiletPaper!==null&&toilet.hasToiletPaper===false){
+              console.log("77777777777",{toilet, filter})
               toiletFits=false;
             }
             // if(filter.gender!==""&&toilet.gender!==null&&((filter.gender==="male"&&toilet.gender==="a")||
@@ -305,11 +302,11 @@ const Markers = ({currentLat, currentLng}) => {
             //           toiletFits=false;
             //         }
             if(toiletFits){
-              //console.log({toilet, filter})
+              console.log("0000000",{toilet, filter})
               filteredToilets.push(toilet);
             }
             else{
-              console.log({toilet, filter});
+              console.log("44444444",{toilet, filter});
             }
            
         });
@@ -385,10 +382,8 @@ const Markers = ({currentLat, currentLng}) => {
                   <span><Chip variant="outlined" icon={<AccessibleForward className={chipStyle.icons}/>} size="small" label="Different abled friendly" className = {chipStyle.root}/>&nbsp;</span> 
                    : null}
                   
-                  {selected.toiletType === "w" ? <span> <Chip  variant="outlined" icon={<AirlineSeatLegroomExtra className={chipStyle.icons}/>}   size="small" label="Commode" className = {chipStyle.root}/>&nbsp; </span>: null}
-                  {/* {selected.gender === "a" ? <span> <Chip   variant="outlined" icon={<PregnantWoman className={chipStyle.icons}/>}   size="small" label="Ladies" className = {chipStyle.root}/>&nbsp; </span>: null}
-                  {selected.gender === "b" ? <span> <Chip   variant="outlined" icon={<Person className={chipStyle.icons}/>}   size="small" label="Gents" className = {chipStyle.root}/>&nbsp; </span>: null}
-                  {selected.gender === "c" ? <span> <Chip   variant="outlined" icon={<Wc className={chipStyle.icons}/>} label="Unisex" size="small" className = {chipStyle.root}/>&nbsp; </span>: null} */}
+                  {!selected.volunteer ? <span> <Chip  variant="outlined" icon={<AirlineSeatLegroomExtra className={chipStyle.icons}/>}   size="small" label="Commode" className = {chipStyle.root}/>&nbsp; </span>: null}
+                  
 
                   
                  
@@ -410,7 +405,7 @@ const Markers = ({currentLat, currentLng}) => {
 
     <Snackbar 
             open={snackbarOpen} 
-            autoHideDuration={5000} 
+            autoHideDuration={5004} 
             onClose={handleSnackbarClose}
             style={{ height: "100%" }} 
             anchorOrigin={{vertical: 'top', horizontal: 'center'}}>

@@ -90,6 +90,10 @@ const toiletSchema = new mongoose.Schema({
     isAvailable:{
         type: Boolean,
         default: true
+    },
+    volunteer:{
+        type:String, 
+        
     }
 });
 
