@@ -46,14 +46,14 @@ const useStyles = makeStyles((theme) => ({
             </ListItem>
           </NavLink>
           
-          <NavLink to="/toilets_leased" style={{ textDecoration: 'none', color: '#212121' }}>
+          {/* <NavLink to="/toilets_leased" style={{ textDecoration: 'none', color: '#212121' }}>
           <ListItem button>
             <ListItemIcon>
               <ListAltIcon />
             </ListItemIcon>
-            <ListItemText primary="Toilets Leased" />
+            <ListItemText primary=" your distribution point Leased" />
             </ListItem>
-          </NavLink>
+          </NavLink> */}
 
 
 

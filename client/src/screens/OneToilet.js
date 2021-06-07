@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { makeStyles, Container, Snackbar, ListItem, ListItemIcon, ListItemText, List, Divider, AppBar, Card, CardActionArea, Toolbar, IconButton, CardMedia, CardContent, Typography, Box, CardActions, Button } from '@material-ui/core';
 import { AccessibleForwardOutlined, AccessTime, AccessTimeOutlined, ArrowBack, AttachMoneyOutlined, BathtubOutlined, Contactless, Info, InfoOutlined, LocationCityOutlined, LocationOnOutlined, MoneyOutlined, Phone, WcOutlined } from '@material-ui/icons';
+import PersonIcon from '@material-ui/icons/Person';
 import { Rating } from '@material-ui/lab'
 import MuiAlert from '@material-ui/lab/Alert';
 import SingleLineGridList from '../widgets/Carousel';
 import NoImage from '../widgets/NoImage';
 function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 const useStyles = makeStyles({
@@ -33,7 +34,7 @@ const OneToilet = () => {
     const { toiletId } = useParams();
     const [toiletProp, setToiletProp] = useState();
     const [loading, setLoading] = useState(true)
-    console.log(toiletId)
+    console.log('111', toiletId)
     const [snackbarStatus, setOpenSnackbar] = React.useState(false);
 
     const rateToilet = () => {
@@ -53,7 +54,7 @@ const OneToilet = () => {
         }).then(res => res.json())
             .then(data => {
 
-                console.log(data);
+                console.log('222', data);
                 if (data.error) {
 
                     console.log(data.error);
@@ -130,36 +131,40 @@ const OneToilet = () => {
 
                 </Toolbar>
             </AppBar>
+
             {toiletProp.photos.length > 1 ? 
                        < SingleLineGridList imageLinks = {toiletProp.photos.slice(1, toiletProp.photos.length)} name={toiletProp.landmarkName} />
                       
                       : 
-                      < NoImage imageLinks = {["https://us.123rf.com/450wm/lenm/lenm1405/lenm140500257/28270032-illustration-of-a-public-restroom-with-cubicles-and-urinals.jpg?ver=6"]} />}
+                      < NoImage imageLinks = {["https://i2.wp.com/blog.scoutingmagazine.org/wp-content/uploads/sites/2/2011/04/volunteer-wordart-highres.jpg?resize=678%2C381&ssl=1"]} />}
             
             <p></p>
             <p></p>
             <Container maxWidth="xs" align="center">
-         
-                     
-        
-<Card className={classes.root} elevation={0}>
+
+
+
+                <Card className={classes.root} elevation={0}>
                     <CardActionArea>
-                       
+
                         <CardContent>
-                            <Typography gutterBottom variant="h6" component="h6">
-                                        {toiletProp.landmarkName}
+                            <Typography gutterBottom variant="h4" component="h4">
+                                {toiletProp.landmarkName}
                             </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
+                            <Typography gutterBottom variant="h6" component="h6" aria-label="Volunteer name: ">
+                                {toiletProp.volunteer}
+                            </Typography>
+                            {/* <Typography variant="body2" color="textSecondary" component="p">
 
                             
                                
                                    <Rating name="read-only" value={toiletProp.avgRating > 0 ? toiletProp.avgRating : 1} />
                                    <Box ml={2}>{toiletProp.avgRating <= 0 ? 2: toiletProp.avgRating }/5.0 (average)</Box>
                                
-                            </Typography>
+                            </Typography> */}
                         </CardContent>
                     </CardActionArea>
-                   
+
                 </Card>
                 <div>
                     <List component="nav" aria-label="main mailbox folders">
@@ -179,15 +184,9 @@ const OneToilet = () => {
                         <Divider />
                         <ListItem button>
                             <ListItemIcon>
-                                <WcOutlined className={iconMakeup.root} />
+                                <PersonIcon className={iconMakeup.root} />
                             </ListItemIcon>
-                            <ListItemText primary={toiletProp.restroomPrice === 0 ? "Free services" : "Restroom fees (INR): " + toiletProp.restroomPrice} />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <BathtubOutlined className={iconMakeup.root} />
-                            </ListItemIcon>
-                            <ListItemText primary={toiletProp.bathroomPrice === 0 ? "Free services" : "Bathroom fees (INR): " + toiletProp.restroomPrice} />
+                            <ListItemText primary={toiletProp.volunteer} />
                         </ListItem>
                         <Divider />
                         <ListItem button>
@@ -201,11 +200,11 @@ const OneToilet = () => {
                             <ListItemIcon>
                                 <Phone className={iconMakeup.root} />
                             </ListItemIcon>
-                            <ListItemText primary={(toiletProp.owner&&toiletProp.owner.phone)? toiletProp.owner.phone : "6000439169"} />
+                            <ListItemText primary={(toiletProp.owner && toiletProp.owner.phone) ? toiletProp.owner.phone : "6000439169"} />
                         </ListItem>
 
                     </List>
-                    <Card elevation={0}>
+                    {/* <Card elevation={0}>
                         <CardActionArea>
                             <CardMedia
 
@@ -236,16 +235,16 @@ const OneToilet = () => {
                         <CardActions>
                             <Button size="small" onClick={() => { rateToilet() }}>SUBMIT</Button>
                         </CardActions>
-                    </Card>
+                    </Card> */}
 
 
                 </div>
             </Container>
-            <Snackbar open={snackbarStatus} autoHideDuration={6000} onClose={(e) => { setOpenSnackbar(false) }}>
+            {/* <Snackbar open={snackbarStatus} autoHideDuration={6000} onClose={(e) => { setOpenSnackbar(false) }}>
                 <Alert onClose={(e) => { setOpenSnackbar(false) }} severity="success">
                     Your rating has been submitted
                 </Alert>
-            </Snackbar>
+            </Snackbar> */}
 
         </div>
         );

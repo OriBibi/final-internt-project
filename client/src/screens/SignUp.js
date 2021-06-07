@@ -118,7 +118,7 @@ const SignUp = () => {
        </br>
       <Container className={classes.container} maxWidth="xs" container align="center">
         <img src="./public_icons/logo.png" className = "logoImg"></img>
-        <Typography><Box fontWeight="fontWeightBold">Flush away your worries</Box></Typography>
+        <Typography><Box fontWeight="fontWeightBold">Sign-up to the volunteer community</Box></Typography>
         <form onSubmit={(e)=>{e.preventDefault()}}>
           <Grid container spacing={3} style={{paddingTop:40}}>
             <Grid item xs={12}>

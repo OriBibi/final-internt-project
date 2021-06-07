@@ -75,7 +75,7 @@ const LogIn = () => {
        </br>
       <Container className={classes.container} maxWidth="xs" container align="center">
         <img src="./public_icons/logo.png" className = "logoImg"></img>
-        <Typography><Box fontWeight="fontWeightBold">Get moving with flush</Box></Typography>
+        <Typography><Box fontWeight="fontWeightBold">Login to the community volunteers</Box></Typography>
         </Container>
         
     <Container className={classes.container} maxWidth="xs">

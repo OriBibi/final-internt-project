@@ -89,7 +89,7 @@ router.get("/allToilets", async (req, res) => {
     try{
         const toiletArray = await Toilet.find({}).populate("owner");
         res.json(toiletArray);
-        console.log("all toilets called")
+        console.log("all points called")
     }
     catch (error){
         res.status(422).send(error);

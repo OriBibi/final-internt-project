@@ -37,7 +37,9 @@ import { ReactComponent as FilterLogo } from '../icons/filter-24px.svg';
 import "@reach/combobox/styles.css";
 import { SearchOutlined } from "@material-ui/icons";
 import mapStyles from "./mapStyles";
+import DatePicker from "react-datepicker";
 
+import "../../node_modules/react-datepicker/dist/react-datepicker.css";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -55,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 const MAPBOX_TOKEN = "pk.eyJ1IjoiMTV0aHJlYWQiLCJhIjoiY2ttZmUxMnhnMDk3ZjJ1czB4Z2xvYzZscCJ9.-88YuiCjn8ZYzeTcmfNnaQ";
 
 const NewToilet = () => {
-  
+
   //snackbar code
   const [snackbarStatus, setOpenSnackbar] = React.useState(false);
   const [successMessage, setSuccessMessage] = React.useState("")
@@ -156,9 +158,11 @@ const NewToilet = () => {
   const [user, setUser] = useState("")
   const [nameOfAllUsers, setNameOfAllUsers] = useState(
     []);
+  const [distributionDate, setDistributionDate] = useState(new Date());
+
 
   const classes = useStyles();
-  
+
   const getUsersFromDB = () => {
     fetch("/api/profile/getUsers", {
       method: "post",
@@ -187,7 +191,7 @@ const NewToilet = () => {
   }
 
   const addDistributionPoint = () => {
-    console.log("addDistributionPoint",{
+    console.log("addDistributionPoint", {
       landmarkName: name,
       isPublic: isPublic,
       differentlyAbled: differentlyAbled,
@@ -197,7 +201,7 @@ const NewToilet = () => {
       bathroomPrice: bathroomPrice,
       lat: marker.lat,
       lng: marker.lng,
-      volunteer:user,
+      volunteer: user,
       photos: photos,
 
     })
@@ -216,11 +220,11 @@ const NewToilet = () => {
         hasToiletPaper: hasToiletPaper,
         restroomPrice: restroomPrice,
         bathroomPrice: bathroomPrice,
-        volunteer:user,
+        volunteer: user,
         lat: marker.lat,
         lng: marker.lng,
         photos: photos
-        
+
 
 
       })
@@ -347,13 +351,16 @@ const NewToilet = () => {
             />
           </Grid>
           <Grid item xs={12}>
+            <FormLabel component="legend">Select volunteer</FormLabel>
             <Select
+              placeholder="volunteers community"
               label="Users:"
               variant="filled"
               fullWidth id="user"
               onClick={getUsersFromDB()}
               onChange={(event) => {
-                setUser(event.currentTarget.dataset.value);}}
+                setUser(event.currentTarget.dataset.value);
+              }}
             >
               {nameOfAllUsers.map(userName => (<MenuItem key={userName} value={userName} >{userName}</MenuItem>))}
             </Select>
@@ -378,6 +385,12 @@ const NewToilet = () => {
 
           </Grid>
           <Grid item xs={12}>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Select Date</FormLabel>
+              <DatePicker selected={distributionDate} onChange={(date) => setDistributionDate(date)} />
+            </FormControl>
+          </Grid>
+          {/* <Grid item xs={12}>
 
             <FormControl component="fieldset">
               <FormLabel component="legend">Norms</FormLabel>
@@ -431,50 +444,12 @@ const NewToilet = () => {
 
 
 
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
-
             <FormControl component="fieldset">
-              <FormLabel component="legend">Pricing</FormLabel>
-              <br />
               <FormGroup row>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      variant="filled"
-                      value={restroomPrice} onChange={(e) => setRestroomPrice(e.target.value)}
-                      id="filled-basic"
-                      label="Restroom (INR)"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Wc />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      variant="filled"
-                      value={bathroomPrice} onChange={(e) => setBathroomPrice(e.target.value)}
-                      id="filled-basic"
-                      label="Bathroom (INR)"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Bathtub />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-
-                  </Grid>
+                <Grid container spacing={2}>                
                   <Grid item xs={12}>
-
                     <br></br>
                     <FormLabel component="legend">Upload image (optional). {rem} uploads remaining</FormLabel>
                     <br></br>
@@ -521,10 +496,6 @@ const NewToilet = () => {
           </Grid>
 
         </Grid>
-
-
-
-
 
       </Container>
       <Snackbar open={snackbarStatus} autoHideDuration={6000} onClose={(e) => { setOpenSnackbar(false) }}>

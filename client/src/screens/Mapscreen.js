@@ -127,7 +127,7 @@ const Map = () => {
       
     <Button variant="contained" size="medium" className="searchFab" color="primary" onClick={searchToilets} >
       <ExploreIcon />
-         Search for nearby restrooms
+         Search for nearby distribution point
     </Button>
   
     <NavLink to="/profile" className="profile"><PersonLogo className="profile" /></NavLink>
@@ -252,7 +252,7 @@ const Markers = ({currentLat, currentLng}) => {
   
   useLayoutEffect(()=>{   
     console.log("useEffect triggered")
-    fetch('/api/toilet/nearbyToilets?lat='+currentLat+'&lng='+currentLng+"&maxDistance=25000",{
+     fetch('/api/toilet/allToilets',{
       method:"GET",
             headers:{
                 "Content-Type":"application/json", 
@@ -266,53 +266,35 @@ const Markers = ({currentLat, currentLng}) => {
           }
          
           const filter=JSON.parse(localStorage.getItem("filterSettings"));
-         
-          var filteredToilets=[];
+
+          var filteredPoint=[];
           if(!filter||!result||result.length===0){
             setToilets(result);
-            console.log("no filter or toilets found.");
+            console.log("no filter or distribution point found.");
             return;
           }
-          result.forEach((toilet) => {
+          result.forEach((distributionPoint) => {
            
-            var toiletFits=true;
-            if(filter.differentlyAbled&&filter.differentlyAbled!==""&&filter.differentlyAbled==="true"&&toilet.differentlyAbled!==null&&toilet.differentlyAbled===false){
-              console.log("99999999999",{toilet, filter}) 
-              toiletFits=false;
+            var distributionPointFits=true;
+            console.log("99999999999",distributionPoint.volunteer)
+            console.log("123456789",filter.userFilter)
+
+            if(filter && distributionPoint.volunteer!==filter.userFilter){
+              console.log("@@   ",{distributionPoint, filter}) 
+              distributionPointFits=false;
             }
-            if(filter.indianPreferred!==""&&toilet.isIndian!==null&&((filter.indianPreferred==="true"&&toilet.isIndian===false)||(filter.indianPreferred==="false"&&toilet.isIndian===true))){
-             console.log("333333",{toilet, filter})
-              toiletFits=false;
-            }
-            if(filter.maximumPrice!==""&&toilet.restroomPrice!==null&&parseInt(filter.maximumPrice)<toilet.restroomPrice){
-              console.log("222222222",{toilet, filter})
-              toiletFits=false;
-            }
-            if(filter.isAvailable&&filter.isAvailable!==""&&toilet.isAvailable!==null&&((filter.isAvailable==="true"&&toilet.isAvailable===false))){
-              console.log("`11111111111`",{toilet, filter})
-              toiletFits=false;
-            }
-            if(filter.needsToiletPaper==="true"&&toilet.hasToiletPaper!==null&&toilet.hasToiletPaper===false){
-              console.log("77777777777",{toilet, filter})
-              toiletFits=false;
-            }
-            // if(filter.gender!==""&&toilet.gender!==null&&((filter.gender==="male"&&toilet.gender==="a")||
-            //         (filter.gender==="female"&&toilet.gender==="b")
-            //         ||(filter.gender==="other"&&!toilet.gender==="c"))){
-            //           toiletFits=false;
-            //         }
-            if(toiletFits){
-              console.log("0000000",{toilet, filter})
-              filteredToilets.push(toilet);
+            if(distributionPointFits){
+              console.log("!!    ",{distributionPoint, filter})
+              filteredPoint.push(distributionPoint);
             }
             else{
-              console.log("44444444",{toilet, filter});
+              console.log("##    ",{distributionPoint, filter});
             }
            
         });
-        setToilets(filteredToilets); 
+        setToilets(filteredPoint); 
         
-        console.log("Filtered toilets, "+filteredToilets.length+" toilets");
+        console.log("Filtered toilets, "+filteredPoint.length+" toilets");
     })
  },[])
 
@@ -349,7 +331,7 @@ const Markers = ({currentLat, currentLng}) => {
             }}
             
             icon ={{
-              url: `https://icon-library.com/images/restroom-icon-png/restroom-icon-png-18.jpg`,
+              url: `https://icon-library.com/images/icon-marker/icon-marker-12.jpg`,
               
               origin: new window.google.maps.Point(0, 0),
               anchor: new window.google.maps.Point(15, 15),
@@ -405,7 +387,7 @@ const Markers = ({currentLat, currentLng}) => {
 
     <Snackbar 
             open={snackbarOpen} 
-            autoHideDuration={5004} 
+            autoHideDuration={5005} 
             onClose={handleSnackbarClose}
             style={{ height: "100%" }} 
             anchorOrigin={{vertical: 'top', horizontal: 'center'}}>

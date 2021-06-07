@@ -388,7 +388,7 @@ module.exports = function (webpackEnv) {
               loader: require.resolve('url-loader'),
               options: {
                 limit: imageInlineSizeLimit,
-                name: 'static/media/[name].[hash:8].[ext]',
+                name: '[path][name].[ext]',
               },
             },
             // Process application JS with Babel.
@@ -558,6 +558,7 @@ module.exports = function (webpackEnv) {
         },
       ],
     },
+   
     plugins: [
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(

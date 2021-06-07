@@ -5,7 +5,7 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-
+//import volunteers from "../estates/volunteers.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,7 +52,7 @@ export default function NoImage({imageLinks}) {
   return (
     <div className={classes.root}>
       <GridList className={classes.gridList} cols={1}>
-        {imageLinks.map((tile) => (
+      {imageLinks.map((tile) => (
           <GridListTile>
             <img src={tile} />
            
