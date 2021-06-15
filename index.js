@@ -14,7 +14,7 @@ app.use(express.json());
  
 
 app.use('/api/profile', require('./routes/profile.js'));
-app.use('/api/toilet', require('./routes/toilet.js'));
+app.use('/api/distributionPoint', require('./routes/point.js'));
 app.use(router);
 
 app.use(express.static(path.join(__dirname, 'client/build'))); 

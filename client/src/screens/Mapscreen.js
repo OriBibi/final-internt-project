@@ -252,7 +252,7 @@ const Markers = ({currentLat, currentLng}) => {
   
   useLayoutEffect(()=>{   
     console.log("useEffect triggered")
-     fetch('/api/toilet/allToilets',{
+     fetch('/api/distributionPoint/allToilets',{
       method:"GET",
             headers:{
                 "Content-Type":"application/json", 
@@ -287,19 +287,18 @@ const Markers = ({currentLat, currentLng}) => {
               console.log("!!    ",{distributionPoint, filter})
               filteredPoint.push(distributionPoint);
             }
-            else{
-              console.log("##    ",{distributionPoint, filter});
-            }
            
         });
         setToilets(filteredPoint); 
         
-        console.log("Filtered toilets, "+filteredPoint.length+" toilets");
-    })
+        console.log("Filtered points, "+filteredPoint.length+" distribution points");
+    }).catch(err => {
+      console.log("error loading points ",err)
+  })
  },[])
 
  const handleMarkerClick = (marker) => {
-  fetch("/api/toilet/oneToilet", {
+  fetch("/api/distributionPoint/OnePoint", {
     method: "post",
     headers: {
         "Content-Type": "application/json",

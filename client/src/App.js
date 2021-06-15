@@ -5,7 +5,6 @@ import ProfileInfo from './screens/ProfileInfo';
 import SignUp from './screens/SignUp';
 import LogIn from './screens/LogIn';
 import Filter from './screens/Filter';
-//import ToiletsLeased from './screens/ToiletsLeased';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -18,8 +17,8 @@ import {reducer,initialState} from './reducers/userReducer'
 
 import { CssBaseline } from  '@material-ui/core'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import NewToilet from './screens/NewToilet';
-import OneToilet from './screens/OneToilet';
+import NewPoint from './screens/NewPoint';
+import OnePoint from './screens/OnePoint';
 
 
 export const UserContext = createContext();
@@ -92,8 +91,8 @@ const Routing = () => {
           <Route path="/filter">
             <Filter />
           </Route>   
-          <Route path="/new_toilet">
-            <NewToilet /> 
+          <Route path="/new_point">
+            <NewPoint /> 
             </Route>   
             {/* <Route path="/toilets_leased">
             <ToiletsLeased/> 
@@ -105,7 +104,7 @@ const Routing = () => {
             < ProfileInfo />
             </Route>   
             <Route path="/one_toilet/:toiletId">
-                <OneToilet />
+                <OnePoint />
             </Route>
 
         

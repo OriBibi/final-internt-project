@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
           </ListItem>
           </NavLink>
 
-          <NavLink to="/new_toilet" style={{ textDecoration: 'none', color: '#212121' }}><ListItem button>
+          <NavLink to="/new_point" style={{ textDecoration: 'none', color: '#212121' }}><ListItem button>
             <ListItemIcon>
               <Add />
             </ListItemIcon>

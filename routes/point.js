@@ -147,7 +147,7 @@ router.post("/newRating", requireLogin,  async (req, res) => {
 });
 
 
-router.post("/oneToilet", requireLogin,  async (req, res)=>{
+router.post("/OnePoint", requireLogin,  async (req, res)=>{
   const { toilet_id } = req.body; 
   try
   {

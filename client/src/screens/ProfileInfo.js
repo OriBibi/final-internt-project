@@ -136,9 +136,7 @@ else
        </br>
        
      <Container className={classes.container} maxWidth="xs" container >
-        {/*<img src="./public_icons/toilet-paper.png" className = "logoImg"></img>
-        <Typography><Box fontWeight="fontWeightBold">Flush away your worries</Box></Typography> */}
-
+        
         <Container align="center">
         <Avatar style={{width:"80px", height:"80px"}}>
           <AccountCircle style={{width:"80px", height:"80px"}} />

@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const MAPBOX_TOKEN = "pk.eyJ1IjoiMTV0aHJlYWQiLCJhIjoiY2ttZmUxMnhnMDk3ZjJ1czB4Z2xvYzZscCJ9.-88YuiCjn8ZYzeTcmfNnaQ";
 
-const NewToilet = () => {
+const NewPoint = () => {
 
   //snackbar code
   const [snackbarStatus, setOpenSnackbar] = React.useState(false);
@@ -206,7 +206,7 @@ const NewToilet = () => {
 
     })
 
-    fetch("/api/toilet/newToilet", {
+    fetch("/api/distributionPoint/newToilet", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -390,61 +390,7 @@ const NewToilet = () => {
               <DatePicker selected={distributionDate} onChange={(date) => setDistributionDate(date)} />
             </FormControl>
           </Grid>
-          {/* <Grid item xs={12}>
-
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Norms</FormLabel>
-              <FormGroup row>
-                <FormControlLabel
-                  control={<Checkbox checked={hasToiletPaper} onChange={(e) => {
-                    setHasToiletPaper(e.target.checked)
-                  }} name="has toilet paper" />}
-                  label="Toilet paper included"
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={differentlyAbled} onChange={(e) => {
-                    setDifferentlyAbled(e.target.checked)
-                  }} name="diff ab friendly" />}
-                  label="Differently abled friendly"
-                />
-
-
-
-
-
-              </FormGroup>
-
-            </FormControl>
-
-
-
-
-          </Grid>
-          <Grid item xs={12}>
-
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Ownership (skip if restroom is privately held)</FormLabel>
-              <FormGroup row>
-                <FormControlLabel
-                  control={<Checkbox checked={isPublic} onChange={(e) => {
-                    setPublic(e.target.checked)
-                  }} name="public toilet" />}
-                  label="Public restroom"
-                />
-
-
-
-
-
-
-              </FormGroup>
-
-            </FormControl>
-
-
-
-
-          </Grid> */}
+         
           <Grid item xs={12}>
             <FormControl component="fieldset">
               <FormGroup row>
@@ -518,7 +464,7 @@ const NewToilet = () => {
 
 
 
-export default NewToilet;
+export default NewPoint;
 
 
 

@@ -30,7 +30,7 @@ const iconStyles = makeStyles({
     },
 });
 
-const OneToilet = () => {
+const OnePoint = () => {
     const { toiletId } = useParams();
     const [toiletProp, setToiletProp] = useState();
     const [loading, setLoading] = useState(true)
@@ -38,7 +38,7 @@ const OneToilet = () => {
     const [snackbarStatus, setOpenSnackbar] = React.useState(false);
 
     const rateToilet = () => {
-        fetch("/api/toilet/newRating", {
+        fetch("/api/distributionPoint/newRating", {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const OneToilet = () => {
     }
 
     useEffect(() => {
-        fetch("/api/toilet/oneToilet", {
+        fetch("/api/distributionPoint/onePoint", {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -193,7 +193,7 @@ const OneToilet = () => {
                             <ListItemIcon>
                                 <AccessTimeOutlined className={iconMakeup.root} />
                             </ListItemIcon>
-                            <ListItemText primary={toiletProp.isAvailable ? "Open from 9 AM to 9 PM everyday" : "Closed"} />
+                            <ListItemText primary={toiletProp.isAvailable ? " The volunteer will arrive from 9 AM to 1 PM " : "Closed"} />
                         </ListItem>
                         <Divider />
                         <ListItem button>
@@ -258,4 +258,4 @@ const OneToilet = () => {
 
 }
 
-export default OneToilet;
+export default OnePoint;

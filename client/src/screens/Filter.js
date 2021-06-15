@@ -73,8 +73,7 @@ const Filter = () => {
             }
         }
         setFilter(filter.userFilter);
-        console.log('filter1111', filter.userFilter);
-        console.log(String('filter2222', filter))
+        console.log('filter ', filter.userFilter);
 
     })
 
