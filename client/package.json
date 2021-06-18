@@ -28,6 +28,7 @@
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "css-loader": "4.3.0",
     "date-fns": "^2.22.1",
+    "dateformat": "^4.5.1",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "eslint": "^7.27.0",

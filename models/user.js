@@ -18,10 +18,6 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    // toiletsLeased:{
-    //     type:[ObjectId],
-    //     ref: "Toilet"
-    // }
 
 })
 

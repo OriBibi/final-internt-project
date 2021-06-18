@@ -40,7 +40,7 @@ import mapStyles from "./mapStyles";
 import DatePicker from "react-datepicker";
 
 import "../../node_modules/react-datepicker/dist/react-datepicker.css";
-
+var dateFormat = require('dateformat');
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -144,13 +144,9 @@ const NewPoint = () => {
   //FORM data
   //lat lng is markers
   const [name, setName] = React.useState("");
-  const [restroomPrice, setRestroomPrice] = React.useState();
-  const [bathroomPrice, setBathroomPrice] = React.useState();
-  const [hasToiletPaper, setHasToiletPaper] = React.useState(false);
   const [contactNumber, setContactNumber] = React.useState("");
-  const [differentlyAbled, setDifferentlyAbled] = React.useState(false);
+  //const [differentlyAbled, setDifferentlyAbled] = React.useState(false);
   const [desc, setDesc] = React.useState("")
-  const [isPublic, setPublic] = React.useState(false);
   const [image, setImage] = useState("")
   const [photoURL, setPhotoURL] = useState("")
   const [photos, setPhotos] = useState([])
@@ -193,12 +189,8 @@ const NewPoint = () => {
   const addDistributionPoint = () => {
     console.log("addDistributionPoint", {
       landmarkName: name,
-      isPublic: isPublic,
-      differentlyAbled: differentlyAbled,
+      distributionDate: distributionDate,
       contactNumber: contactNumber,
-      hasToiletPaper: hasToiletPaper,
-      restroomPrice: restroomPrice,
-      bathroomPrice: bathroomPrice,
       lat: marker.lat,
       lng: marker.lng,
       volunteer: user,
@@ -206,7 +198,7 @@ const NewPoint = () => {
 
     })
 
-    fetch("/api/distributionPoint/newToilet", {
+    fetch("/api/distributionPoint/newPoint", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -214,19 +206,12 @@ const NewPoint = () => {
       },
       body: JSON.stringify({
         landmarkName: name,
-        isPublic: isPublic,
-        differentlyAbled: differentlyAbled,
+        distributionDate: distributionDate,
         contactNumber: contactNumber,
-        hasToiletPaper: hasToiletPaper,
-        restroomPrice: restroomPrice,
-        bathroomPrice: bathroomPrice,
         volunteer: user,
         lat: marker.lat,
         lng: marker.lng,
-        photos: photos
-
-
-
+        photos: photos,
       })
     }).then(res => res.json())
       .then(data => {
@@ -387,7 +372,7 @@ const NewPoint = () => {
           <Grid item xs={12}>
             <FormControl component="fieldset">
               <FormLabel component="legend">Select Date</FormLabel>
-              <DatePicker selected={distributionDate} onChange={(date) => setDistributionDate(date)} />
+              <DatePicker selected={distributionDate} onChange={(date) => setDistributionDate(dateFormat(date, "dddd, mmmm dS, yyyy"))} />
             </FormControl>
           </Grid>
          

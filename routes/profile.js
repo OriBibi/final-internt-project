@@ -8,7 +8,7 @@ const requireLogin = require('../utility/requireLogin.js')
 var mongoose = require('mongoose');
 var db = require('../utility/db.js');
 var User = require("../models/user");
-var Toilet = require("../models/toilet");
+var Point = require("../models/point");
 
 
 

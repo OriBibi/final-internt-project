@@ -94,16 +94,14 @@ const Routing = () => {
           <Route path="/new_point">
             <NewPoint /> 
             </Route>   
-            {/* <Route path="/toilets_leased">
-            <ToiletsLeased/> 
-            </Route>    */}
+          
           <Route path="/example">
             <Map />
             </Route>   
             <Route path="/profile_info">
             < ProfileInfo />
             </Route>   
-            <Route path="/one_toilet/:toiletId">
+            <Route path="/one_point/:userId">
                 <OnePoint />
             </Route>
 

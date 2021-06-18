@@ -84,7 +84,7 @@ const Map = () => {
   const panTo = React.useCallback(({ lat, lng }) => {
     mapRef.current.panTo({ lat, lng });
     mapRef.current.setZoom(14);
-    searchToilets()
+    searchPoints()
     //changePositionState();
   }, []);
 
@@ -109,7 +109,7 @@ const Map = () => {
       handleSnackbarClose()
     }
   }*/
-  const searchToilets = ()=>{
+  const searchPoints = ()=>{
     setZoom(mapRef.current.getZoom())
     setLat(mapRef.current.getCenter().lat());
     setLng(mapRef.current.getCenter().lng());
@@ -125,7 +125,7 @@ const Map = () => {
     <div>
     
       
-    <Button variant="contained" size="medium" className="searchFab" color="primary" onClick={searchToilets} >
+    <Button variant="contained" size="medium" className="searchFab" color="primary" onClick={searchPoints} >
       <ExploreIcon />
          Search for nearby distribution point
     </Button>
@@ -235,14 +235,14 @@ function Search({ panTo }) {
 
 
 const Markers = ({currentLat, currentLng}) => {
-  const [toilets, setToilets] = React.useState([]);
+  const [points, setPoints] = React.useState([]);
   const [selected, setSelected] = React.useState(null);
   
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
   const chipStyle = useStyles(); 
   
-  const handleZeroToilets = () => {
+  const handleZeroPoints = () => {
     setSnackbarOpen(true);
   };
 
@@ -251,8 +251,8 @@ const Markers = ({currentLat, currentLng}) => {
   };
   
   useLayoutEffect(()=>{   
-    console.log("useEffect triggered")
-     fetch('/api/distributionPoint/allToilets',{
+    console.log("mapScreen useEffect triggered")
+     fetch('/api/distributionPoint/allPoints',{
       method:"GET",
             headers:{
                 "Content-Type":"application/json", 
@@ -260,16 +260,16 @@ const Markers = ({currentLat, currentLng}) => {
             },
     }).then(res=>res.json())
     .then(result=>{
-          console.log("Found toilets, "+result.length+" toilets"); 
+          console.log("Found points, "+result.length+" points"); 
           if(result.length===0){
-            handleZeroToilets();
+            handleZeroPoints();
           }
          
           const filter=JSON.parse(localStorage.getItem("filterSettings"));
 
           var filteredPoint=[];
           if(!filter||!result||result.length===0){
-            setToilets(result);
+            setPoints(result);
             console.log("no filter or distribution point found.");
             return;
           }
@@ -289,7 +289,7 @@ const Markers = ({currentLat, currentLng}) => {
             }
            
         });
-        setToilets(filteredPoint); 
+        setPoints(filteredPoint); 
         
         console.log("Filtered points, "+filteredPoint.length+" distribution points");
     }).catch(err => {
@@ -298,29 +298,29 @@ const Markers = ({currentLat, currentLng}) => {
  },[])
 
  const handleMarkerClick = (marker) => {
-  fetch("/api/distributionPoint/OnePoint", {
+  fetch("/api/distributionPoint/onePoint", {
     method: "post",
     headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + localStorage.getItem("jwt"),
     },
     body: JSON.stringify({
-        toilet_id: marker._id
+      point_id: marker._id
     })
   })
   .then(res => res.json())
   .then(data => {
-        console.log(data);
+        console.log("get onePoint msg ",data);
         setSelected(data)
     }).catch(err => {
-        console.log(err)
+        console.log("didn't get onePoint msg ",err)
     })
     //setSelected(marker)
 }
 
  return(
    <div>
-     {toilets.map((marker) => (
+     {points.map((marker) => (
           <Marker
             key={`${marker._id}`}
             position={{ lat: marker.lat, lng: marker.lng }}
@@ -355,13 +355,13 @@ const Markers = ({currentLat, currentLng}) => {
                   {selected.landmarkName}
             </Typography>
             
-            <Box component="fieldset" borderColor="transparent">
+            {/* <Box component="fieldset" borderColor="transparent">
                   {selected.avgRating > 0 ? <Rating name="read-only" value={selected.avgRating > 0 ? selected.avgRating: 0} readOnly />: null}
-            </Box>
+            </Box> */}
             <div>
-                  {selected.differentlyAbled ? 
+                  {/* {selected.differentlyAbled ? 
                   <span><Chip variant="outlined" icon={<AccessibleForward className={chipStyle.icons}/>} size="small" label="Different abled friendly" className = {chipStyle.root}/>&nbsp;</span> 
-                   : null}
+                   : null} */}
                   
                   {!selected.volunteer ? <span> <Chip  variant="outlined" icon={<AirlineSeatLegroomExtra className={chipStyle.icons}/>}   size="small" label="Commode" className = {chipStyle.root}/>&nbsp; </span>: null}
                   
@@ -377,7 +377,7 @@ const Markers = ({currentLat, currentLng}) => {
             
             </CardContent>
             <CardActions>
-                <NavLink to={'/one_toilet/'+selected._id}><Chip  icon= {<Info style={{color:"white"}}/>} label = "Details" style={{backgroundColor:"#3f50b5", color:"white", fontWeight:"bold"}}></Chip></NavLink>     
+                <NavLink to={'/one_point/'+selected._id}><Chip  icon= {<Info style={{color:"white"}}/>} label = "Details" style={{backgroundColor:"#3f50b5", color:"white", fontWeight:"bold"}}></Chip></NavLink>     
             </CardActions>
             </Card>
             </div>
@@ -392,7 +392,7 @@ const Markers = ({currentLat, currentLng}) => {
             anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
 
         <Alert onClose={handleSnackbarClose} severity="warning">
-          No restrooms were found in this area!
+          No distribution point were found in this area!
         </Alert>
       </Snackbar>
    

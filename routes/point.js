@@ -8,18 +8,18 @@ const requireLogin = require('../utility/requireLogin.js')
 var mongoose = require('mongoose');
 var db = require('../utility/db.js');
 var User = require("../models/user");
-var Toilet = require("../models/toilet");
-const toilet = require('../models/toilet');
+var Point = require("../models/point");
+const point = require('../models/point');
 var ObjectId = require('mongoose').Types.ObjectId
 
 
-router.post('/newToilet', requireLogin, (req, res) => {
-  const {lng, lat, restroomPrice, bathroomPrice, description, photos, hasToiletPaper, differentlyAbled, contactNumber, landmarkName, volunteer, isPublic } = req.body;
+router.post('/newPoint', requireLogin, (req, res) => {
+  const {lng, lat, description, photos ,distributionDate, contactNumber, landmarkName, volunteer } = req.body;
 
-  if( !lng ||!lat || !restroomPrice || hasToiletPaper===null || !contactNumber || !landmarkName || !volunteer ){
+  if( !lng ||!lat  ||  !contactNumber || !landmarkName || !volunteer ){
     return res.status(422).json({error:"Null fields are not allowed"})
   }
-  const toilet = new Toilet({
+  const point = new Point({
     lat,
     lng,
     location: {
@@ -27,17 +27,15 @@ router.post('/newToilet', requireLogin, (req, res) => {
       coordinates:[lng, lat]
     },
     owner: req.user || "", 
-    restroomPrice,
-    bathroomPrice,
-    hasToiletPaper,
     photos: photos, 
     description, 
     contactNumber,
-    differentlyAbled,
+    distributionDate,
     landmarkName, 
-    volunteer
+    volunteer,
+    
   })
-  toilet.save()
+  point.save()
     .then(() => {
       res.json({message:"Saved successfully"})
     })
@@ -47,13 +45,13 @@ router.post('/newToilet', requireLogin, (req, res) => {
 
 });
 
-router.get("/nearbyToilets", (req, res) => {
+router.get("/nearbyPoints", (req, res) => {
   const {maxDistance, lng, lat} = req.query;
   if(!lng||!lat){
     res.status(422).json({ error: "Both lat and lng need to be present!" });
   }
   console.log(req.query)
-      Toilet.find({
+      Point.find({
         location: {
          $nearSphere: {
           $maxDistance: Number(maxDistance)||(10000), //meters
@@ -67,28 +65,28 @@ router.get("/nearbyToilets", (req, res) => {
       .find((error, result) => {
         if(error) 
           console.log(error);
-        //console.log("nearby toilets called, "+(result)?result.length:"0"+" Toilets found nearby.")
+        //console.log("nearby Points called, "+(result)?result.length:"0"+" Points found nearby.")
         res.json(result);
        });
 });
 
-router.get("/ownerToilets", requireLogin, async (req, res) => {
+router.get("/ownerPoints", requireLogin, async (req, res) => {
   try{
-    const toiletArray = await Toilet.find({
+    const pointArray = await Point.find({
       'owner': (ObjectId)(req.user._id) 
     }).populate("owner");
-    res.json(toiletArray);
-    console.log("owner toilets called, "+req.user._id)
+    res.json(pointArray);
+    console.log("owner Points called, "+req.user._id)
 }
 catch (error){
     res.status(422).send(error);
 }
  })
 
-router.get("/allToilets", async (req, res) => {
+router.get("/allPoints", async (req, res) => {
     try{
-        const toiletArray = await Toilet.find({}).populate("owner");
-        res.json(toiletArray);
+        const pointArray = await Point.find({}).populate("owner");
+        res.json(pointArray);
         console.log("all points called")
     }
     catch (error){
@@ -97,22 +95,22 @@ router.get("/allToilets", async (req, res) => {
 });
 
 router.post("/changeAvailability", requireLogin, async (req, res) => {
-    const {toilet_id} = req.body;
+    const {point_id} = req.body;
     console.log("change avail re")
-    Toilet.findOne({ _id: toilet_id }, function(err, toilet) {
-      if(!toilet){
-        console.log(toilet);
-        return res.status(422).json({error:"This toilet doesn't exist."})
+    Point.findOne({ _id: point_id }, function(err, point) {
+      if(!point){
+        console.log(point);
+        return res.status(422).json({error:"This point doesn't exist."})
    
    }
-      //console.log({toilet})
-      if(String(toilet.owner)!==String(req.user._id)){
-           return res.status(422).json({error:"You do not own this toilet! toilet owner- " +toilet.owner+" and you - "+req.user._id})
+      //console.log({point})
+      if(String(point.owner)!==String(req.user._id)){
+           return res.status(422).json({error:"You do not own this point! point owner- " +point.owner+" and you - "+req.user._id})
       
       }
       
-      toilet.isAvailable = !toilet.isAvailable;
-      toilet.save()
+      point.isAvailable = !point.isAvailable;
+      point.save()
       .then(() => {
         res.json({message:"Changed availability successfully"})
       })
@@ -123,19 +121,19 @@ router.post("/changeAvailability", requireLogin, async (req, res) => {
 });
 
 router.post("/newRating", requireLogin,  async (req, res) => {
-  const {toilet_id, rating} = req.body;
+  const {point_id, rating} = req.body;
   console.log(req.body)
-  Toilet.findOne({ _id: toilet_id }, function(err, toilet) {
-    // if(toilet.usersWhoRated.includes(req.user._id)){
+  Point.findOne({ _id: point_id }, function(err, point) {
+    // if(point.usersWhoRated.includes(req.user._id)){
     //   return res.status(422).json({error:"You have already voted!"})
       
     // }
-    if(toilet.avgRating===-1){
-      toilet.avgRating===0;
-    }
-    toilet.avgRating=(toilet.avgRating*toilet.usersWhoRated.length+rating)/(toilet.usersWhoRated.length+1);
-    toilet.usersWhoRated.push(req.user._id); //This is from requireLogin(uses the bearer code there)
-    toilet.save()
+    // if(point.avgRating===-1){
+    //   point.avgRating===0;
+    // }
+    // point.avgRating=(point.avgRating*point.usersWhoRated.length+rating)/(point.usersWhoRated.length+1);
+    point.usersWhoRated.push(req.user._id); //This is from requireLogin(uses the bearer code there)
+    point.save()
     .then((data) => {
       console.log(data)
       res.json(data)
@@ -147,18 +145,20 @@ router.post("/newRating", requireLogin,  async (req, res) => {
 });
 
 
-router.post("/OnePoint", requireLogin,  async (req, res)=>{
-  const { toilet_id } = req.body; 
+router.post("/onePoint", requireLogin,  async (req, res)=>{
+  const { point_id } = req.body; 
   try
   {
-       const theToilet = await toilet.findOne({_id: toilet_id}).populate("owner");
-      if (theToilet)
+       const thePoint = await Point.findOne({_id: point_id}).populate("owner");
+       console.log("the point is: ",thePoint);
+      if (thePoint)
       {
-        res.json(theToilet)
+        console.log("sending point to the app: ",thePoint);
+        res.json(thePoint)
       }
       else
       {
-        res.status(422).json({error:"No such toilet exists"})
+        res.status(422).json({error:"No such point exists"})
       }
   }
   catch (e) 

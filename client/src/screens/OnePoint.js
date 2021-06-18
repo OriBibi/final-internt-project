@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { makeStyles, Container, Snackbar, ListItem, ListItemIcon, ListItemText, List, Divider, AppBar, Card, CardActionArea, Toolbar, IconButton, CardMedia, CardContent, Typography, Box, CardActions, Button } from '@material-ui/core';
-import { AccessibleForwardOutlined, AccessTime, AccessTimeOutlined, ArrowBack, AttachMoneyOutlined, BathtubOutlined, Contactless, Info, InfoOutlined, LocationCityOutlined, LocationOnOutlined, MoneyOutlined, Phone, WcOutlined } from '@material-ui/icons';
+import { AccessibleForwardOutlined, AccessTime, AccessTimeOutlined, ArrowBack, AttachMoneyOutlined, Contactless, Info, InfoOutlined, LocationCityOutlined, LocationOnOutlined, MoneyOutlined, Phone, WcOutlined } from '@material-ui/icons';
 import PersonIcon from '@material-ui/icons/Person';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { Rating } from '@material-ui/lab'
 import MuiAlert from '@material-ui/lab/Alert';
 import SingleLineGridList from '../widgets/Carousel';
@@ -31,13 +32,17 @@ const iconStyles = makeStyles({
 });
 
 const OnePoint = () => {
-    const { toiletId } = useParams();
-    const [toiletProp, setToiletProp] = useState();
+    const { userId } = useParams();
+    const [pointProp, setPointProp] = useState();
     const [loading, setLoading] = useState(true)
-    console.log('111', toiletId)
+    console.log('111', userId)
     const [snackbarStatus, setOpenSnackbar] = React.useState(false);
-
-    const rateToilet = () => {
+    const [isAvailable ,pointIsntAvailable ]=useState(true);
+    // const pointIsntAvailable = () =>{
+    //     pointProp.isAvailable=false;
+    //     console.log("the point is unavailable")
+    // }
+    const ratePoint = () => {
         fetch("/api/distributionPoint/newRating", {
             method: "post",
             headers: {
@@ -45,7 +50,7 @@ const OnePoint = () => {
                 "Authorization": "Bearer " + localStorage.getItem("jwt"),
             },
             body: JSON.stringify({
-                toilet_id: toiletId,
+                user_id: userId,
                 rating: stars
 
 
@@ -62,7 +67,7 @@ const OnePoint = () => {
                 }
                 else {
                     console.log(data)
-                    setToiletProp(data)
+                    setPointProp(data)
                     setOpenSnackbar(true)
 
 
@@ -75,6 +80,7 @@ const OnePoint = () => {
     }
 
     useEffect(() => {
+        console.log("onePoint useEffect triggered")
         fetch("/api/distributionPoint/onePoint", {
             method: "post",
             headers: {
@@ -82,29 +88,30 @@ const OnePoint = () => {
                 "Authorization": "Bearer " + localStorage.getItem("jwt"),
             },
             body: JSON.stringify({
-                toilet_id: toiletId
+                point_id: userId
 
 
 
             })
         }).then(res => res.json())
             .then(data => {
+                console.log("user number ", userId);
 
-                console.log(data);
+                console.log("get onePoint msg ", data);
                 if (data.error) {
 
-                    console.log(data.error);
+                    console.log("didnt get onePoint msg ", data.error);
 
                 }
                 else {
                     console.log(data)
-                    setToiletProp(data)
+                    setPointProp(data)
                     setLoading(false)
                 }
             }).catch(err => {
                 //setErrorStatus(true)
                 //setErrorMessage(err)
-                console.log(err)
+                console.log("didnt get onePoint msg ", err)
             })
     }, [])
     const [stars, setStars] = React.useState(2);
@@ -132,12 +139,12 @@ const OnePoint = () => {
                 </Toolbar>
             </AppBar>
 
-            {toiletProp.photos.length > 1 ? 
-                       < SingleLineGridList imageLinks = {toiletProp.photos.slice(1, toiletProp.photos.length)} name={toiletProp.landmarkName} />
-                      
-                      : 
-                      < NoImage imageLinks = {["https://i2.wp.com/blog.scoutingmagazine.org/wp-content/uploads/sites/2/2011/04/volunteer-wordart-highres.jpg?resize=678%2C381&ssl=1"]} />}
-            
+            {pointProp.photos.length > 1 ?
+                < SingleLineGridList imageLinks={pointProp.photos.slice(1, pointProp.photos.length)} name={pointProp.landmarkName} />
+
+                :
+                < NoImage imageLinks={["https://i2.wp.com/blog.scoutingmagazine.org/wp-content/uploads/sites/2/2011/04/volunteer-wordart-highres.jpg?resize=678%2C381&ssl=1"]} />}
+
             <p></p>
             <p></p>
             <Container maxWidth="xs" align="center">
@@ -149,19 +156,12 @@ const OnePoint = () => {
 
                         <CardContent>
                             <Typography gutterBottom variant="h4" component="h4">
-                                {toiletProp.landmarkName}
+                                {pointProp.landmarkName}
                             </Typography>
                             <Typography gutterBottom variant="h6" component="h6" aria-label="Volunteer name: ">
-                                {toiletProp.volunteer}
+                                {pointProp.volunteer}
                             </Typography>
-                            {/* <Typography variant="body2" color="textSecondary" component="p">
-
-                            
-                               
-                                   <Rating name="read-only" value={toiletProp.avgRating > 0 ? toiletProp.avgRating : 1} />
-                                   <Box ml={2}>{toiletProp.avgRating <= 0 ? 2: toiletProp.avgRating }/5.0 (average)</Box>
-                               
-                            </Typography> */}
+                        
                         </CardContent>
                     </CardActionArea>
 
@@ -172,79 +172,56 @@ const OnePoint = () => {
                             <ListItemIcon >
                                 <LocationOnOutlined className={iconMakeup.root} />
                             </ListItemIcon>
-                            <ListItemText primary={toiletProp.landmarkName} />
+                            <ListItemText primary={pointProp.landmarkName} />
                         </ListItem>
-                        {toiletProp.differentlyAbled ? <ListItem button>
+                        {/* {pointProp.differentlyAbled ? <ListItem button>
                             <ListItemIcon >
                                 <AccessibleForwardOutlined className={iconMakeup.root} />
                             </ListItemIcon>
                             <ListItemText primary="Differently Abled Friendly" />
-                        </ListItem> : null}
+                        </ListItem> : null} */}
 
                         <Divider />
                         <ListItem button>
                             <ListItemIcon>
                                 <PersonIcon className={iconMakeup.root} />
                             </ListItemIcon>
-                            <ListItemText primary={toiletProp.volunteer} />
+                            <ListItemText primary={pointProp.volunteer} />
                         </ListItem>
                         <Divider />
                         <ListItem button>
                             <ListItemIcon>
                                 <AccessTimeOutlined className={iconMakeup.root} />
                             </ListItemIcon>
-                            <ListItemText primary={toiletProp.isAvailable ? " The volunteer will arrive from 9 AM to 1 PM " : "Closed"} />
+                            <ListItemText primary={isAvailable ? " The volunteer will arrive from 9 AM to 1 PM " : "Closed"} />
+                        </ListItem>
+                        <Divider />
+                        <ListItem button>
+                            <ListItemIcon>
+                                <CalendarTodayIcon className={iconMakeup.root} />
+                            </ListItemIcon>
+                            <ListItemText primary={pointProp.distributionDate} />
                         </ListItem>
                         <Divider />
                         <ListItem button>
                             <ListItemIcon>
                                 <Phone className={iconMakeup.root} />
                             </ListItemIcon>
-                            <ListItemText primary={(toiletProp.owner && toiletProp.owner.phone) ? toiletProp.owner.phone : "6000439169"} />
+                            <ListItemText primary={(pointProp.owner && pointProp.owner.phone) ? pointProp.owner.phone : "6000439169"} />
+                        </ListItem>
+                        <ListItem button>
+                            <Button onClick={() => pointIsntAvailable(false)} color="primary" on fullWidth type="submit" variant="contained">
+                             Package delivered
+                            </Button>
                         </ListItem>
 
                     </List>
-                    {/* <Card elevation={0}>
-                        <CardActionArea>
-                            <CardMedia
 
-
-                                title="landmarkName"
-
-
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    Rate this restroom
-              </Typography>
-                                <Typography color="textSecondary">
-                                    Tell us about your perception of social hygiene
-            </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-
-                                    <Box component="fieldset" borderColor="transparent">
-
-                                        <Rating name="read-only" value={stars}
-                                            onChange={(event, newValue) => {
-                                                setStars(newValue);
-                                            }} />
-                                    </Box>
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        <CardActions>
-                            <Button size="small" onClick={() => { rateToilet() }}>SUBMIT</Button>
-                        </CardActions>
-                    </Card> */}
 
 
                 </div>
             </Container>
-            {/* <Snackbar open={snackbarStatus} autoHideDuration={6000} onClose={(e) => { setOpenSnackbar(false) }}>
-                <Alert onClose={(e) => { setOpenSnackbar(false) }} severity="success">
-                    Your rating has been submitted
-                </Alert>
-            </Snackbar> */}
+
 
         </div>
         );
